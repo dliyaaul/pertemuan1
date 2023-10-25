@@ -1,0 +1,5 @@
+Tipe Data Primitif
+1. Char, Char hanya bisa menyimpan 1 Huruf / Karakter. Contohnya untuk menyimpan nilai dalam bentuk huruf seperti 'A', 'B', 'C' atau 'D';
+2. Int, Int adalah tipe data bilangan bulat dan hanya bisa menyimpan Angka dan default nilainya adalah 0. Contohnya biasa dipakai untuk index struktur perulangan / sebuah array seperti '123456789' atau '-123456789'. Int tidak bisa menyimpan angka desimal!;
+3. Double, Double biasa digunakan untuk nilai Desimal. Contohnya biasa digunakan untuk perhitungan matematis seperti nilai phi yaitu '3.14';
+4. Boolean, Boolean mempunyai nilai default yaitu True/False. Contohnya biasa digunakan untuk menyatakan kebenaran seperti True(Benar) atau False(Salah);
