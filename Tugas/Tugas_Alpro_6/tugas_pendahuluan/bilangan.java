@@ -27,8 +27,9 @@ public class bilangan {
         System.out.println("3. Faktorial");
         System.out.println("4. Permutasi");
         System.out.println("5. Jarak");
+        System.out.println("6. Keluar");
 
-        System.out.print("Pilihan Anda [1-5] : ");
+        System.out.print("Pilihan Anda [1-6] : ");
         menu = inp.nextInt();
 
         switch (menu) {
@@ -47,6 +48,9 @@ public class bilangan {
             case 5:
                 jarak();
                 break;
+            case 6:
+                System.exit(0);
+                break;
             default:
                 System.out.println("\nPilihan Anda Tidak Valid!");
                 ulang();
@@ -55,6 +59,27 @@ public class bilangan {
     }
 
     void biner() {
+        System.out.println("\nMenghitung Bilangan Biner");
+        System.out.print("Masukkan nilai : ");
+        int nilai = inp.nextInt();
+
+        String biner = "";
+        if (nilai == 0) {
+            biner = "0";
+
+            System.out.println("Nilai dalam basis 2 adalah : " + biner);
+        } else if (nilai < 0) {
+            System.out.println("Nilai Tidak Boleh Min");
+        } else {
+            while (nilai > 0) {
+                biner = (nilai % 2) + biner;
+                nilai = nilai / 2;
+            }
+
+            System.out.println("Nilai dalam basis 2 adalah : " + biner);
+        }
+
+        ulang();
 
     }
 
