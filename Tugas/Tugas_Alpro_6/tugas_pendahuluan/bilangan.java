@@ -104,11 +104,47 @@ public class bilangan {
     }
 
     void faktorial() {
-
+        System.out.println("\nMenghitung Bilangan Faktorial");
+        System.out.print("Masukkan Angka : ");
+        int angka = inp.nextInt();
+        if (angka < 0) {
+            System.out.println("Angka Harus Bilangan Bulat Positif!");
+        } else if (angka > 20) {
+            System.out.println("Angka Maksimal Yaitu 20");
+        } else {
+            long hasil = 1L;
+            for (int i = 1; i <= angka; i++) {
+                hasil = hasil * i;
+            }
+            System.out.println("Faktorial dari " + angka + "! adalah " + hasil);
+        }
+        ulang();
     }
 
     void permutasi() {
-
+        System.out.println("\nMenghitung Bilangan Permuatasi");
+        System.out.print("Masukkan Pembilang 1 = ");
+        int m = inp.nextInt();
+        System.out.print("Masukkan Pembilang 2 = ");
+        int n = inp.nextInt();
+        System.out.println("Permutasi (" + m + "," + n + ")");
+        System.out.println("        " + m + "!");
+        System.out.println("= ----------------------------");
+        System.out.println("      (" + m + "-" + n + ") !");
+        int o = 1;
+        int p = 1;
+        int q, r, s;
+        for (q = m; q >= 1; q--) {
+            o = o * q;
+        }
+        r = (m - n);
+        for (s = r; s >= 1; s--) {
+            p = p * s;
+        }
+        double hasil = o / p;
+        System.out.println(hasil + "/1.0");
+        System.out.println("Hasil : " + hasil);
+        ulang();
     }
 
     void jarak() {
@@ -116,7 +152,7 @@ public class bilangan {
     }
 
     public void ulang() {
-        System.out.print("\nApakah Ingin Mengulang (y/n)? ");
+        System.out.print("\nIngin Kembali ke Menu (y/n)? ");
         String pilihan = inp.next();
         ulang = pilihan.equals("y");
         if (ulang == true) {
