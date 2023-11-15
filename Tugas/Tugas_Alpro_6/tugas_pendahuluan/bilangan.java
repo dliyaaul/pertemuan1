@@ -50,6 +50,7 @@ public class bilangan {
                 Jarak();
                 break;
             case 6:
+                System.out.println("Keluar dari aplikasi...");
                 System.exit(0);
                 break;
             default:
@@ -196,6 +197,8 @@ public class bilangan {
             System.out.println("jadi waktu Budi dan Ani untuk saling bertemu adalah: " + jam + " jam " + menit
                     + " menit " + detik + " detik");
         }
+
+        ulang();
     }
 
     public void ulang() {
