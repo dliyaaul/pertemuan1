@@ -1,9 +1,10 @@
 package Tugas.Tugas_Alpro_6.tugas_pendahuluan;
 
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 /**
- * Innerbilangan
+ * Mainbilangan
  */
 class MainBilangan {
     public static void main(String[] args) {
@@ -46,7 +47,7 @@ public class bilangan {
                 permutasi();
                 break;
             case 5:
-                jarak();
+                Jarak();
                 break;
             case 6:
                 System.exit(0);
@@ -147,8 +148,54 @@ public class bilangan {
         ulang();
     }
 
-    void jarak() {
+    void Jarak() {
+        System.out.print("Jarak antara Budi dan Ani(km): ");
+        double jarak = inp.nextDouble();
+        System.out.print("Kecepatan mobil Budi (km/jam): ");
+        double kBudi = inp.nextDouble();
+        System.out.print("Kecepatan mobil Ani (km/jam): ");
+        double kAni = inp.nextDouble();
 
+        double jarak2 = jarak * 1000;
+
+        DecimalFormat format1 = new DecimalFormat(" #0.0");
+
+        if (kBudi <= 0 || kAni <= 0 || jarak < 0) {
+            System.out.println("Nilai yang dimasukkan tidak valid.");
+        } else {
+            double jBudi = 0;
+            double jAni = jarak2;
+            int jam = 0;
+            int menit = 0;
+            int detik = 0;
+
+            while (jBudi < jAni) {
+                double temu = 1;
+                detik += temu;
+
+                double kBudi2 = kBudi / 3.6;
+                double kAni2 = kAni / 3.6;
+
+                if (detik >= 60) {
+                    menit += detik / 60;
+                    detik = menit % 60;
+                }
+
+                if (menit >= 60) {
+                    jam += menit / 60;
+                    menit = jam % 60;
+                }
+
+                jBudi += kBudi2;
+                jAni -= kAni2;
+
+                System.out.println("Waktu: " + jam + " jam " + menit + " menit " + detik + " detik" + "- Jarak Budi: "
+                        + format1.format(jBudi) + " m, Jarak Ani: " + format1.format(jAni) + " m");
+
+            }
+            System.out.println("jadi waktu Budi dan Ani untuk saling bertemu adalah: " + jam + " jam " + menit
+                    + " menit " + detik + " detik");
+        }
     }
 
     public void ulang() {
