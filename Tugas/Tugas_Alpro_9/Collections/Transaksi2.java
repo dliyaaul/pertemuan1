@@ -18,9 +18,13 @@ class CollectionsComparator {
 
         Collections.sort(arr, new MyObjectComparatorByTotal());
         cs.traversal(arr, "Ascending");
+
+        Collections.reverse(arr);
+        cs.traversal(arr, "Descending");
     }
 
     void traversal(ArrayList<Transaksi2> data, String jenis) {
+        System.out.println("Transaksi 2 - Collections Kelas Comparator");
         System.out.println("Data Transaksi sort " + jenis + " : ");
         for (int a = 0; a < data.size(); a++) {
             System.out.print(data.get(a) + " ");
@@ -32,23 +36,33 @@ class CollectionsComparator {
 
 class MyObjectComparatorByTotal implements Comparator<Transaksi2> {
     @Override
+    // byDouble
     public int compare(Transaksi2 obj1, Transaksi2 obj2) {
         return Double.compare(obj1.getTotal(), obj2.getTotal());
     }
+
+    // byString
+    // public int compare(Transaksi2 obj1, Transaksi2 obj2) {
+    // return obj1.getTanggal().compareTo(obj2.getTanggal());
+    // }
+
+    // public int compare(Transaksi2 obj1, Transaksi2 obj2) {
+    // return obj1.getNoTransaksi().compareTo(obj2.getNoTransaksi());
+    // }
 }
 
 public class Transaksi2 {
-    int noTransaksi;
+    Integer noTransaksi;
     Double total;
     String tanggal;
 
-    public Transaksi2(int noTransaksi, Double total, String tanggal) {
+    public Transaksi2(Integer noTransaksi, Double total, String tanggal) {
         this.noTransaksi = noTransaksi;
         this.total = total;
         this.tanggal = tanggal;
     }
 
-    int getNoTransaksi() {
+    Integer getNoTransaksi() {
         return noTransaksi;
     }
 

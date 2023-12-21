@@ -21,6 +21,7 @@ class CollectionsComparable {
     }
 
     void traversal(ArrayList<Transaksi> data, String jenis) {
+        System.out.println("Transaksi 1 - Collections Interface Comparable");
         System.out.println("Data Transaksi sort " + jenis + " : ");
         for (int a = 0; a < data.size(); a++) {
             System.out.print(data.get(a) + " ");
@@ -59,7 +60,7 @@ public class Transaksi implements Comparable<Transaksi> {
 
     @Override
     public int compareTo(Transaksi transaksi) {
-        return this.total.compareTo(transaksi.total);
+        return this.tanggal.compareTo(transaksi.tanggal);
     }
 
 }
