@@ -1,6 +1,8 @@
-package Tugas;
+package Tugas.Lelang;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
 
 class Admin {
@@ -103,6 +105,10 @@ class Barang {
     public String getStatus() {
         return status;
     }
+
+    public String toString() {
+        return idBarang + "\t" + namaBarang + "\t\tRp." + hargaTawar + "\t" + status;
+    }
 }
 
 class Penawaran {
@@ -139,6 +145,44 @@ class Penawaran {
     public double getHargaTawar() {
         return hargaTawar;
     }
+
+    public String toString() {
+        return idPembeli + "\t" + nama + "\t" + barang + "\t\t" + hargaTawar;
+    }
+}
+
+class MyObjectComparatorByTotal implements Comparator<Barang> {
+    @Override
+    // byDouble
+    // public int compare(Barang obj1, Barang obj2) {
+    // return Double.compare(obj1.getUsername(), obj2.getUsername());
+    // }
+
+    // byString
+    public int compare(Barang obj1, Barang obj2) {
+        return obj1.getNamaBarang().compareTo(obj2.getNamaBarang());
+    }
+
+    // public int compare(Transaksi2 obj1, Transaksi2 obj2) {
+    // return obj1.getNoTransaksi().compareTo(obj2.getNoTransaksi());
+    // }
+}
+
+class MyObjectComparatorByHargaTawar implements Comparator<Penawaran> {
+    @Override
+    // byDouble
+    public int compare(Penawaran obj1, Penawaran obj2) {
+        return Double.compare(obj1.getHargaTawar(), obj2.getHargaTawar());
+    }
+
+    // byString
+    // public int compare(Penawaran obj1, Penawaran obj2) {
+    // return obj1.getHargaTawar().compareTo(obj2.getHargaTawar());
+    // }
+
+    // public int compare(Transaksi2 obj1, Transaksi2 obj2) {
+    // return obj1.getNoTransaksi().compareTo(obj2.getNoTransaksi());
+    // }
 }
 
 class Lelang {
@@ -148,11 +192,49 @@ class Lelang {
     ArrayList<Pembeli> arrPembeli = new ArrayList<>();
     ArrayList<Penawaran> arrPenawaran = new ArrayList<>();
     ArrayList<Admin> admins = new ArrayList<>();
+
     private Pembeli pembeliLoggedIn;
 
-    public static void main(String[] args) {
+    public Lelang() {
+        // data dummy pembeli
+        Pembeli pembeli1 = new Pembeli(1, "Jay", "jay123", "jay123");
+        Pembeli pembeli2 = new Pembeli(2, "Joe", "joe123", "joe123");
+        arrPembeli.add(pembeli1);
+        arrPembeli.add(pembeli2);
+
+        // data dummy barang
+        Barang barang1 = new Barang(1, "Laptop", 1000, "yes");
+        Barang barang2 = new Barang(2, "Hp", 350, "yes");
+        arrBarang.add(barang1);
+        arrBarang.add(barang2);
+    }
+
+    // void traversal(ArrayList<Admin> data, String jenis) {
+    // System.out.println("Transaksi 2 - Collections Kelas Comparator");
+    // System.out.println("Data Transaksi sort " + jenis + " : ");
+    // for (int a = 0; a < data.size(); a++) {
+    // System.out.print(data.get(a) + " ");
+    // System.out.println();
+    // }
+    // System.out.println();
+    // }
+
+    public static void main(String args[]) {
         Lelang l = new Lelang();
+        ArrayList<Barang> arrBarang = new ArrayList<>();
+        ArrayList<Penawaran> arrPenawaran = new ArrayList<>();
         l.menu();
+
+        l.lihatBarang(arrBarang, "Original data");
+
+        Collections.sort(arrBarang, new MyObjectComparatorByTotal());
+        l.lihatBarang(arrBarang, "Ascending");
+
+        Collections.reverse(arrBarang);
+        l.lihatBarang(arrBarang, "Descending");
+
+        Collections.sort(arrPenawaran, new MyObjectComparatorByHargaTawar());
+        l.sortPenawaran(arrPenawaran, "Ascending");
     }
 
     private void menu() {
@@ -215,32 +297,20 @@ class Lelang {
                 System.out.println("\nLogin Admin berhasil");
                 System.out.println("Selamat datang Admin");
                 return true;
-            }
-        }
-        return false;
-    }
-
-    public void loginPembeli() {
-        System.out.println("\n===== Login Aplikasi =====");
-        System.out.print("Masukkan username : ");
-        String un = input.next();
-        System.out.print("Masukkan password : ");
-        String pw = input.next();
-
-        for (Pembeli Pembeli : arrPembeli) {
-            if (Pembeli.getUsername().equals(un) && Pembeli.getPassword().equals(pw)) {
+            } else {
                 Pembeli p = cekLoginPembeli(un, pw);
                 if (p != null) {
                     pembeliLoggedIn = p;
                     System.out.println("\nLogin Pembeli berhasil");
-                    System.out.println("Selamat datang " + p.getNama());
+                    System.out.println("Selamat datang " + p.getNama() + "!");
                 } else {
                     System.out.println("\nUsername atau password tidak sesuai");
                     menu();
                 }
-
+                return false;
             }
         }
+        return false;
     }
 
     public Pembeli cekLoginPembeli(String username, String password) {
@@ -278,6 +348,7 @@ class Lelang {
     }
 
     public void menuAdmin() {
+        Lelang l = new Lelang();
         int pilihan = 0;
         while (pilihan != 6) {
             System.out.println("\n===== Aplikasi Lelang =====");
@@ -303,7 +374,9 @@ class Lelang {
                     break;
                 case 3:
                     if (!arrPenawaran.isEmpty()) {
-                        sortPenawaran();
+                        lihatSemuaPenawaran();
+                        Collections.reverse(arrPenawaran);
+                        l.sortPenawaran(arrPenawaran, "Descending");
                     } else {
                         System.out.println("\nBelum ada transaksi lelang");
                         menuAdmin();
@@ -379,6 +452,7 @@ class Lelang {
     }
 
     public void menuBarang() {
+        Lelang l = new Lelang();
         int pilihan = 0;
         while (pilihan != 4) {
             System.out.println("\n===== Aplikasi Lelang =====");
@@ -386,7 +460,8 @@ class Lelang {
             System.out.println("1. Tambahkan Barang Lelang");
             System.out.println("2. Lihat Data Barang Lelang");
             System.out.println("3. Edit Barang Lelang");
-            System.out.println("4. Kembali");
+            System.out.println("4. Hapus Barang Lelang");
+            System.out.println("5. Kembali");
             System.out.print("Masukkan pilihan : ");
             pilihan = input.nextInt();
             switch (pilihan) {
@@ -395,7 +470,12 @@ class Lelang {
                     break;
                 case 2:
                     if (!arrBarang.isEmpty()) {
-                        lihatBarang();
+                        System.out.println("\n===== Daftar Barang Lelang =====");
+                        l.lihatBarang(arrBarang, "Original data");
+                        Collections.sort(arrBarang, new MyObjectComparatorByTotal());
+                        l.lihatBarang(arrBarang, "Ascending");
+                        Collections.reverse(arrBarang);
+                        l.lihatBarang(arrBarang, "Descending");
                     } else {
                         System.out.println("\nBelum ada data barang yang ditambahkan");
                     }
@@ -404,6 +484,9 @@ class Lelang {
                     editBarang();
                     break;
                 case 4:
+                    hapusBarang();
+                    break;
+                case 5:
                     System.out.println("\nKembali ke menu utama...");
                     menuAdmin();
                     break;
@@ -460,86 +543,104 @@ class Lelang {
         System.out.println("Barang berhasil ditambahkan");
     }
 
-    public void lihatBarang() {
-        System.out.println("\n===== Daftar Barang Lelang =====");
-        if (arrBarang.size() < 1) {
-            System.out.println("\nBelum ada data barang yang ditambahkan");
-        } else {
-            System.out.println("ID \tNama Barang \tHarga Awal \tStatus");
-            for (int i = 0; i < arrBarang.size(); i++) {
-                System.out.println(
-                        arrBarang.get(i).getIdBarang() + "\t" + arrBarang.get(i).getNamaBarang() + "\tRp."
-                                + arrBarang.get(i).gethargaTawar() + "\t" + arrBarang.get(i).getStatus());
-            }
+    public void lihatBarang(ArrayList<Barang> data, String jenis) {
+        System.out.println("Data Barang sort Nama " + jenis + " : ");
+        System.out.println("ID \tNama Barang \tHarga Awal \tStatus");
+        // for (int i = 0; i < arrBarang.size(); i++) {
+        // System.out.println(arrBarang.get(i).getIdBarang() + "\t" +
+        // arrBarang.get(i).getNamaBarang() + "\t\t" + "Rp."
+        // + arrBarang.get(i).gethargaTawar() + "\t" + arrBarang.get(i).getStatus());
+        // }
+        for (int a = 0; a < data.size(); a++) {
+            System.out.print(data.get(a));
+            System.out.println();
         }
+        System.out.println();
     }
 
     public void lihatBarangAvailable() {
         System.out.println("\n===== Barang yang Available =====");
-        if (arrBarang.size() < 1) {
-            System.out.println("\nBelum ada data barang yang ditambahkan");
-        } else {
-            System.out.println("ID \tNama Barang \tHarga Awal");
-            for (int i = 0; i < arrBarang.size(); i++) {
-                if (arrBarang.get(i).getStatus().equals("yes")) {
-                    System.out.println(arrBarang.get(i).getIdBarang() + "\t" + arrBarang.get(i).getNamaBarang() + "\tRp"
-                            + arrBarang.get(i).gethargaTawar());
-                }
+        System.out.println("ID \tNama Barang \tHarga Awal");
+        for (int i = 0; i < arrBarang.size(); i++) {
+            if (arrBarang.get(i).getStatus().equals("yes")) {
+                System.out.println(arrBarang.get(i).getIdBarang() + "\t" + arrBarang.get(i).getNamaBarang() + "\t\t"
+                        + "Rp." + arrBarang.get(i).gethargaTawar());
             }
         }
     }
 
     public void editBarang() {
-        lihatBarang();
-        if (arrBarang.size() >= 1) {
-            System.out.println("\n===== Edit Barang Lelang =====");
-            System.out.print("Masukkan ID barang yang akan diedit : ");
-            int id = input.nextInt();
-            int ketemu = -1;
-            for (int i = 0; i < arrBarang.size(); i++) {
-                if (arrBarang.get(i).getIdBarang() == id) {
-                    ketemu = i;
+        lihatBarang(arrBarang, "Original data");
+        System.out.println("\n===== Edit Barang Lelang =====");
+        System.out.print("Masukkan ID barang yang akan diedit : ");
+        int id = input.nextInt();
+        int ketemu = -1;
+        for (int i = 0; i < arrBarang.size(); i++) {
+            if (arrBarang.get(i).getIdBarang() == id) {
+                ketemu = i;
+                break;
+            }
+        }
+        if (ketemu >= 0) {
+            System.out.println("Pilihan yang dapat diedit :");
+            System.out.println("1. Nama barang");
+            System.out.println("2. Harga tawar");
+            System.out.println("3. Status barang");
+            System.out.print("Masukkan pilihan : ");
+            int pilihan = input.nextInt();
+            switch (pilihan) {
+                case 1:
+                    System.out.print("\nMasukkan nama barang baru : ");
+                    String newNama = input.next();
+                    arrBarang.get(ketemu).setNamaBarang(newNama);
+                    System.out.println("Nama barang berhasil diubah");
                     break;
-                }
+                case 2:
+                    System.out.print("\nMasukkan harga tawar baru : ");
+                    double newHarga = input.nextDouble();
+                    arrBarang.get(ketemu).sethargaTawar(newHarga);
+                    System.out.println("Harga tawar berhasil diubah");
+                    break;
+                case 3:
+                    System.out.print("\nMasukkan status barang baru [yes/no] : ");
+                    String newStatus = input.next().toLowerCase();
+                    arrBarang.get(ketemu).setStatus(newStatus);
+                    System.out.println("Status barang berhasil diubah");
+                    if (newStatus.equals("yes")) {
+                        System.out.println("Barang bisa ditawar");
+                    } else {
+                        System.out.println("Barang tidak bisa ditawar");
+                    }
+                    break;
+                default:
+                    System.out.println("\nInputan tidak valid");
+                    break;
             }
-            if (ketemu >= 0) {
-                System.out.println("Pilihan yang dapat diedit :");
-                System.out.println("1. Nama barang");
-                System.out.println("2. Harga tawar");
-                System.out.println("3. Status barang");
-                System.out.print("Masukkan pilihan : ");
-                int pilihan = input.nextInt();
-                switch (pilihan) {
-                    case 1:
-                        System.out.print("\nMasukkan nama barang baru : ");
-                        String newNama = input.next();
-                        arrBarang.get(ketemu).setNamaBarang(newNama);
-                        System.out.println("Nama barang berhasil diubah");
-                        break;
-                    case 2:
-                        System.out.print("\nMasukkan harga tawar baru : ");
-                        double newHarga = input.nextDouble();
-                        arrBarang.get(ketemu).sethargaTawar(newHarga);
-                        System.out.println("Harga tawar berhasil diubah");
-                        break;
-                    case 3:
-                        System.out.print("\nMasukkan status barang baru [yes/no] : ");
-                        String newStatus = input.next().toLowerCase();
-                        arrBarang.get(ketemu).setStatus(newStatus);
-                        System.out.println("Status barang berhasil diubah");
-                        if (newStatus.equals("yes")) {
-                            System.out.println("Barang bisa ditawar");
-                        } else {
-                            System.out.println("Barang tidak bisa ditawar");
-                        }
-                        break;
-                    default:
-                        System.out.println("\nInputan tidak valid");
-                        break;
-                }
-            } else {
-                System.out.println("\nBarang tidak ditemukan");
+        } else {
+            System.out.println("\nBarang tidak ditemukan");
+        }
+    }
+
+    public void hapusBarang() {
+        Lelang l = new Lelang();
+        System.out.println("\n===== Hapus Barang Lelang =====");
+
+        l.lihatBarang(arrBarang, "Original data");
+        System.out.print("Masukkan ID barang yang akan di Hapus : ");
+        int id = input.nextInt();
+        int ketemu = -1;
+        for (int i = 0; i < arrBarang.size(); i++) {
+            if (arrBarang.get(i).getIdBarang() == id) {
+                ketemu = i;
+                break;
             }
+        }
+
+        if (ketemu >= 0) {
+            arrBarang.remove(ketemu);
+            System.out.println("\nBarang Berhasil di Hapus");
+        } else {
+            System.out.println("\nBarang tidak ditemukan");
         }
     }
 
@@ -661,7 +762,21 @@ class Lelang {
         }
     }
 
-    public void sortPenawaran() {
+    public void lihatSemuaPenawaran() {
+        System.out.println("\n===== Semua Penawaran =====");
+        double totalPenawaran = 0;
+        for (Penawaran penawaran : arrPenawaran) {
+            System.out.println("ID Pembeli    : " + penawaran.getIdPembeli());
+            System.out.println("Nama Pembeli  : " + penawaran.getNama());
+            System.out.println("ID Barang     : " + penawaran.getIdBarang());
+            System.out.println("Harga Tawar   : " + penawaran.getHargaTawar());
+            System.out.println("=============================");
+            totalPenawaran += penawaran.getHargaTawar();
+        }
+        System.out.println("Total penawaran keseluruhan : " + totalPenawaran);
+    }
+
+    public void sortPenawaran(ArrayList<Penawaran> data, String jenis) {
         System.out.println("\nHasil Transaksi Lelang Berdasarkan Penawaran Tertinggi"); // descending
         for (int i = 0; i < arrPenawaran.size() - 1; i++) {
             int mindex = i;
@@ -677,14 +792,21 @@ class Lelang {
 
         System.out.println("===== Histori Penawaran Lelang =====");
         System.out.println("ID \tNama \tBarang \t\tHarga Tawar");
-        for (int i = 0; i < arrPenawaran.size(); i++) {
-            System.out.println(arrPenawaran.get(i).getIdPembeli() + "\t" + arrPenawaran.get(i).getNama() + "\t"
-                    + arrPenawaran.get(i).getBarang() + "\t\t" + arrPenawaran.get(i).getHargaTawar());
+        // for (int i = 0; i < arrPenawaran.size(); i++) {
+        // System.out.println(arrPenawaran.get(i).getIdPembeli() + "\t" +
+        // arrPenawaran.get(i).getNama() + "\t"
+        // + arrPenawaran.get(i).getBarang() + "\t\t" +
+        // arrPenawaran.get(i).getHargaTawar());
+        // }
+        for (int a = 0; a < data.size(); a++) {
+            System.out.print(data.get(a));
+            System.out.println();
         }
+        System.out.println();
     }
 
     public void pemenangLelang() {
-        lihatBarang();
+        lihatBarang(arrBarang, "Original data");
         System.out.print("\nMasukkan ID barang yang ingin Anda cek : ");
         int idBarang = input.nextInt();
         int idxBarang = cekBarang(idBarang);
@@ -696,7 +818,11 @@ class Lelang {
                 System.out.println("ID pemenang   : " + pemenang.getIdPembeli());
                 System.out.println("Nama pemenang : " + pemenang.getNama());
                 System.out.println("Harga tawar   : " + pemenang.getHargaTawar());
+            } else {
+                System.out.println("Maaf, belum ada pemenang untuk barang ini");
             }
+        } else {
+            System.out.println("Barang tidak ditemukan");
         }
     }
 
@@ -717,9 +843,10 @@ class Lelang {
         System.out.print("\nMasukkan ID barang yang ingin Anda cek : ");
         int idBarang = input.nextInt();
         int idxBarang = cekBarang(idBarang);
-        if (idxBarang >= 0 && arrBarang.get(idxBarang).getStatus().equals("yes")) {
+        if (idxBarang >= 0) {
             Penawaran pemenang = cariPemenang(idxBarang);
             if (pemenang != null && pemenang.getIdPembeli() == pembeliLoggedIn.getId()) {
+                System.out.println("Informasi pemenang dengan penawaran tertinggi saat ini : ");
                 System.out.println("\nSELAMAT, ANDA MEMENANGKAN LELANG " + pemenang.getBarang().toUpperCase() + "!");
                 System.out.println("Dengan harga tawar : " + pemenang.getHargaTawar());
             } else {
