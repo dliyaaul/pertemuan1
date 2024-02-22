@@ -525,40 +525,22 @@ class Lelang {
     }
 
     public void tambahBarang() {
-        boolean ulang = true;
         System.out.println("\n===== Input Barang Lelang =====");
-        while (ulang) {
-            System.out.print("Nama barang : ");
-            String nama = input.next().toLowerCase(); // Mengubah input menjadi huruf kecil
-    
-            boolean barangSudahAda = false;
-            for (Barang p : arrBarang) {
-                if (p.getNamaBarang().toLowerCase().equals(nama)) {
-                    barangSudahAda = true;
-                    break;
-                }
-            }
-    
-            if (!barangSudahAda) {
-                System.out.print("Harga awal : ");
-                double harga = input.nextDouble();
-                System.out.print("Apakah barang bisa ditawar? [yes/no] : ");
-                String status = input.next().toLowerCase();
-                int id;
-                if (!arrBarang.isEmpty()) {
-                    id = arrBarang.get(arrBarang.size() - 1).getIdBarang() + 1;
-                } else {
-                    id = 1;
-                }
-    
-                Barang b = new Barang(id, nama, harga, status);
-                arrBarang.add(b);
-                System.out.println("Barang berhasil ditambahkan");
-                return;
-            } else {
-                System.out.println("\nNama Barang Sudah Ada!\n");
-            }
+        System.out.print("Nama barang : ");
+        String nama = input.next();
+        System.out.print("Harga awal : ");
+        double harga = input.nextDouble();
+        System.out.print("Apakah barang bisa ditawar? [yes/no] : ");
+        String status = input.next().toLowerCase();
+        int id;
+        if (!arrBarang.isEmpty()) {
+            id = arrBarang.get(arrBarang.size() - 1).getIdBarang() + 1;
+        } else {
+            id = 1;
         }
+        Barang b = new Barang(id, nama, harga, status);
+        arrBarang.add(b);
+        System.out.println("Barang berhasil ditambahkan");
     }
 
     public void lihatBarang(ArrayList<Barang> data, String jenis) {
@@ -864,8 +846,9 @@ class Lelang {
         if (idxBarang >= 0) {
             Penawaran pemenang = cariPemenang(idxBarang);
             if (pemenang != null && pemenang.getIdPembeli() == pembeliLoggedIn.getId()) {
-                System.out.println("Informasi pemenang dengan penawaran tertinggi saat ini : ");
-                System.out.println("\nSELAMAT, ANDA MEMENANGKAN LELANG " + pemenang.getBarang().toUpperCase() + "!");
+                System.out.println("Informasi pemenang dengan penawaran tertinggi saat ini: ");
+                System.out.println("\nSELAMAT, ANDA MEMENANGKAN LELANG " +
+                        pemenang.getBarang().toUpperCase() + "!");
                 System.out.println("Dengan harga tawar : " + pemenang.getHargaTawar());
             } else {
                 System.out.println("\nMaaf, Anda belum menang");
